@@ -2,19 +2,25 @@
 import requests
 import twitter
 import getlatest
+import os
+import sys
 from twitter import *
 
-def twitter_stuff():
+def twitter_stuff(acc):
 	t = Twitter(auth=OAuth('381112053-BQEtXSOpebuGnX1fa1dVNdAcWgkrYTnspp8hFVbe',
 							'LxYx6DZej6cePuO6Gmovqw4eYotqEjPlOKF0QcuzIHLv1',
 							'eT7B0SZQrotxuJ385joCMZ8Z6',
 						   	'741wIEGOqmjTbd36eAc1wcRU9ddyqhMy4yvjvbEhw9e2t4Jpuz'
 						   	))
 
-	tl = t.search.tweets(q="from:@metaphorminute -filter:replies", result_type="recent", count="5")
+	tl = t.search.tweets(q="from:@" + acc + " -filter:replies", result_type="recent", count="5")
 
 	# print(tl.keys())
 	# print(tl['statuses'][1]['text'])
+	
+	if not os.path.exists("recent_tweets"):
+            f = open("recent_tweets", "w+")
+            f.close()
 
 	#last 5 tweets from last time we checked
 	with open('recent_tweets', 'r') as f:
@@ -52,4 +58,4 @@ def push_to_discord(content):
 	requests.post(hook_url, data=data)
 
 if __name__ == '__main__':
-	twitter_stuff()
+	twitter_stuff(sys.argv[1])

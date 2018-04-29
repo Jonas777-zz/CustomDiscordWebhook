@@ -2,6 +2,7 @@
 import requests
 import twitter
 import sys
+import os
 from twitter import *
 
 def update(acc, verbose, update):
@@ -12,6 +13,10 @@ def update(acc, verbose, update):
 						   	))
 
 	tl = t.search.tweets(q="from:@" + acc + " -filter:replies", result_type="recent", count="5")
+
+        if not os.path.exists("recent_tweets"):
+            f = open("recent_tweets", "w+")
+            f.close()
 
 	with open('recent_tweets', 'r+') as f:
 		f.seek(0)
